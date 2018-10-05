@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/steel"
+    tools:context=".MainActivity">
+
+    <Button
+        android:id="@+id/button_game"
+        android:layout_width="168dp"
+        android:layout_height="76dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:onClick="start_game"
+        android:text="Start Game"
+        android:layout_centerInParent="true"
+         />
+
+    <Button
+        android:id="@+id/buttonRank"
+        android:layout_width="168dp"
+        android:layout_height="76dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="125dp"
+        android:onClick="rank"
+        android:text="Rank" />
+
+    <TextView
+        android:id="@+id/textViewTitle"
+        android:layout_width="374dp"
+        android:layout_height="62dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="8dp"
+        android:gravity="center"
+        android:text="Gravity Ball"
+        android:textColor="@android:color/background_light"
+        android:textSize="50sp"
+        android:layout_centerHorizontal="true"
+
+ />
+
+</RelativeLayout>
