@@ -32,8 +32,8 @@ public class bullet extends Canvas {
         speedX = random.nextInt(randomSpeedX) + 1;
         speedY = random.nextInt(randomSpeedY) + 1;
         numBullets = 30;
-        x = random.nextInt(1100)+100;
-        y = random.nextInt(1800) + 102;
+        x = random.nextInt(1035);
+        y = random.nextInt(1600) + 102;
     }
 
     public float getSpeedX(){

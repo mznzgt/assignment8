@@ -43,4 +43,14 @@ public class result extends AppCompatActivity {
     public void returnToMain(View view){
         startActivity(new Intent(getApplicationContext(),MainActivity.class));
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+    }
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+    }
 }

@@ -14,6 +14,7 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.view.GestureDetectorCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -47,6 +48,8 @@ public class gameView extends AppCompatActivity {
     private static int level = 1;
     private int numBullets;
     private static int controlNumBullets = 1;
+    private boolean dragAreaHelper = false;
+    private Thread gameThread = null;
 
     // gravity
     SensorManager sensorMgr;
@@ -109,13 +112,13 @@ public class gameView extends AppCompatActivity {
             //controlNumBullets = controlNumBullets + level;
             System.out.println("number of bullet:" + controlNumBullets +"  " + "current level : " + level );
 
-            for (int i = 0; i< 100; i++ ){
+            for (int i = 0; i< 1000; i++ ){
                 bullets[i] = new bullet(context);
                 bulletsX[i] = bullets[i].getX();
                 bulletsY[i] = bullets[i].getY();
             }
 
-            for(int i = 0; i< 100; i++){
+            for(int i = 0; i< 1000; i++){
                 bulletSpeedX[i] = bullets[i].getSpeedX();
                 bulletSpeedY[i] = bullets[i].getSpeedY();
             }
@@ -183,7 +186,7 @@ public class gameView extends AppCompatActivity {
                     bulletSpeedX[i] = -bulletSpeedX[i];
                 }
 
-                if(bulletsY[i] < 100 || bulletsY[i] > canvas.getHeight()-250){
+                if(bulletsY[i] < 100 || bulletsY[i] > canvas.getHeight()-350){
                     bulletSpeedY[i] = -bulletSpeedY[i];
                 }
 
@@ -216,7 +219,7 @@ public class gameView extends AppCompatActivity {
 
             for(int i = 0; i< controlNumBullets; i++){
                 if(RectF.intersects(playerBallRect,bulletsRect[i])){
-                    //gameOver = true;
+                    gameOver = true;
                 }
             }
 
@@ -231,8 +234,7 @@ public class gameView extends AppCompatActivity {
                 playerBallY = playBall.getY();
                 level = level + 1;
                 Yposition = 0;
-                controlNumBullets = controlNumBullets+1;
-                System.out.println("Constructor check" + controlNumBullets);
+                controlNumBullets = level;
             }
 
             //////////////////////////////////////// end collision detection
@@ -244,10 +246,19 @@ public class gameView extends AppCompatActivity {
             }*/
 
             if(gameOver == true){
-                Intent intent2 = new Intent(getApplicationContext(),result.class);
-                intent2.putExtra("SCORE", score);
-                startActivity(intent2);
-                finish();
+                //gameOver();
+            }
+
+            Paint dragHelperGreen = new Paint();
+            dragHelperGreen.setColor(Color.GREEN);
+            Paint dragHelperRed = new Paint();
+            dragHelperRed.setColor(Color.RED);
+
+            if(dragAreaHelper == false){
+                canvas.drawLine(0,1828,canvas.getWidth(),1828,dragHelperRed);
+            }
+            else if(dragAreaHelper == true){
+                canvas.drawLine(0,1828,canvas.getWidth(),1828,dragHelperGreen);
             }
 
 
@@ -264,33 +275,42 @@ public class gameView extends AppCompatActivity {
             gestureDetector.onTouchEvent(event);
             scaleDetector.onTouchEvent(event);
 
-            float a =0,b=0,c=0;
-
+            float a =0,b=0,c=0,d=0;
+            dragAreaHelper = false;
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
                         Log.d("COMPX202", "Down");
                         a = event.getY(0);
-                        if(a > 1878 & a < 2127) {
+                        if(a > 1828 & a < 2127) {
                             firstTouchY = a;
+                            dragAreaHelper = true;
                         }
                         break;
                     case MotionEvent.ACTION_UP:
                         Log.d("COMPX202", "Up");
                         b = event.getY(0);
-                        if(b > 1878 & b < 2127) {
+                        //d = event.getX(0);
+                        if(b > 1828 & b < 2127) {
+                            //dragAreaHelper = true;
                             secondTouchY = b;
                         }
-                        if(secondTouchY > 1878 & secondTouchY < 2127 & firstTouchY > 1878 & firstTouchY < 2127 ){
+                        if(secondTouchY > 1828 & secondTouchY < 2127 & firstTouchY > 1828 & firstTouchY < 2127 ){
                             c = firstTouchY - secondTouchY;
                             if(c > 0){
                                 c = c/30;
                                 Yposition = -c;
+                                System.out.println(firstTouchY + ",  " + secondTouchY + ",  " + Yposition);
                             }
                         }
-                        System.out.println("b is :" + b + "yspeed is :" + Yposition + "secondTouchY is:" + secondTouchY + "first touch y" + firstTouchY + "c is:" + c);
+                        firstTouchY = 0;
+                        secondTouchY = 0;
                         break;
                     case MotionEvent.ACTION_MOVE:
                         //Log.d("COMPX202", "Move");
+                        d = event.getY(0);
+                        if(d > 1828 & d < 2127){
+                            dragAreaHelper = true;
+                        }
                         break;
                 }
             invalidate();
@@ -323,6 +343,23 @@ public class gameView extends AppCompatActivity {
 
         Log.d("COMPX202", "Finishing onCreate");
 
+        }
+
+        public void gameOver(){
+            this.onStop();
+            this.finish();
+            //Intent intent2 = new Intent(getApplicationContext(),result.class);
+            //intent2.putExtra("SCORE", score);
+            //startActivity(intent2);
+            //startActivity(new Intent(getApplicationContext(),result.class));
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+
+                    Intent i=new Intent(getApplicationContext(),result.class);
+                    startActivity(i);
+                }
+            }, 10);
         }
 
     @Override
