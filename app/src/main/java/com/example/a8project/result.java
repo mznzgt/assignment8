@@ -10,6 +10,8 @@ import android.widget.TextView;
 
 public class result extends AppCompatActivity {
 
+    private int[] rankResult = new int[]{0,0,0,0,0};
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,8 +35,34 @@ public class result extends AppCompatActivity {
         else{
             highScoreLabel.setText("High Score is :" + highScore);
         }
-
+        //for(int i = 0;i<rankResult.length-1;i++){
+           // if (score > rankResult[i]){
+           //     rankResult[i+1] = rankResult[i];
+                //rankResult[i] = score;
+           // }
+        //}
     }
+
+    public int returnFirst(){
+        return rankResult[0];
+    }
+
+    public int returnSecond(){
+        return rankResult[1];
+    }
+
+    public int returnThird(){
+        return rankResult[2];
+    }
+
+    public int returnFourth(){
+        return rankResult[3];
+    }
+
+    public int returnFifth(){
+        return rankResult[4];
+    }
+
 
     public void playAgain(View view){
         startActivity(new Intent(getApplicationContext(),gameView.class));
