@@ -7,7 +7,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.RectF;
 
-public class playerBall extends Canvas {
+public class playerBall extends Ball {
     RectF rect;
     private Bitmap bitmap;
     private float length;

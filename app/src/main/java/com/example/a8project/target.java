@@ -9,7 +9,7 @@ import android.graphics.RectF;
 
 import java.util.Random;
 
-public class target extends Canvas {
+public class target extends Ball {
 
     private Bitmap bitmap;
     private float length;
