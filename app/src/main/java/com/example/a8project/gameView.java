@@ -43,13 +43,15 @@ public class gameView extends AppCompatActivity {
     float []bulletSpeedX = new float[1000];
     float []bulletSpeedY = new float[1000];
     private boolean gameOver = false;
-    private boolean gameStart = false;
+    private boolean gamePlaying = false;
     private int score = 0;
     private static int level = 1;
     private int numBullets;
     private static int controlNumBullets = 1;
     private boolean dragAreaHelper = false;
-    private Thread gameThread = null;
+    private boolean ySpeedControl = true;
+
+
 
     // gravity
     SensorManager sensorMgr;
@@ -235,6 +237,7 @@ public class gameView extends AppCompatActivity {
                 level = level + 1;
                 Yposition = 0;
                 controlNumBullets = level;
+                ySpeedControl = true;
             }
 
             //////////////////////////////////////// end collision detection
@@ -294,14 +297,17 @@ public class gameView extends AppCompatActivity {
                             //dragAreaHelper = true;
                             secondTouchY = b;
                         }
-                        if(secondTouchY > 1828 & secondTouchY < 2127 & firstTouchY > 1828 & firstTouchY < 2127 ){
-                            c = firstTouchY - secondTouchY;
-                            if(c > 0){
-                                c = c/30;
-                                Yposition = -c;
-                                System.out.println(firstTouchY + ",  " + secondTouchY + ",  " + Yposition);
+                        if(ySpeedControl == true) {
+                            if (secondTouchY > 1828 & secondTouchY < 2127 & firstTouchY > 1828 & firstTouchY < 2127) {
+                                c = firstTouchY - secondTouchY;
+                                if (c > 0) {
+                                    c = c / 30;
+                                    Yposition = -c;
+                                    System.out.println(firstTouchY + ",  " + secondTouchY + ",  " + Yposition);
+                                }
                             }
                         }
+                        ySpeedControl = false;
                         firstTouchY = 0;
                         secondTouchY = 0;
                         break;
@@ -348,18 +354,10 @@ public class gameView extends AppCompatActivity {
         public void gameOver(){
             this.onStop();
             this.finish();
-            //Intent intent2 = new Intent(getApplicationContext(),result.class);
-            //intent2.putExtra("SCORE", score);
-            //startActivity(intent2);
-            //startActivity(new Intent(getApplicationContext(),result.class));
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-
-                    Intent i=new Intent(getApplicationContext(),result.class);
-                    startActivity(i);
-                }
-            }, 10);
+            Intent intent2 = new Intent(getApplicationContext(),result.class);
+            intent2.putExtra("SCORE", score);
+            startActivity(intent2);
+            startActivity(new Intent(getApplicationContext(),result.class));
         }
 
     @Override
@@ -372,6 +370,10 @@ public class gameView extends AppCompatActivity {
         super.onStop();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
 
     class MyGestureListener implements GestureDetector.OnGestureListener {
         @Override

@@ -26,7 +26,7 @@ public class target extends Ball {
     public target(Context context){
         length = 100;
         height = 100;
-        bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.bullet);
+        bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.target);
         bitmap = Bitmap.createScaledBitmap(bitmap, (int) (length), (int) (height), false);
         speedX = random.nextInt(randomSpeedX) + 1;
         speedY = random.nextInt(randomSpeedY) + 1;
