@@ -2,6 +2,7 @@ package com.example.a8project;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.pm.FeatureInfo;
 import android.content.pm.PackageManager;
@@ -44,7 +45,8 @@ public class gameView extends AppCompatActivity {
     float []bulletSpeedY = new float[1000];
     private boolean gameOver = false;
     private boolean gamePlaying = false;
-    private int score = 0;
+    private static int score = 0;
+    private static String scoreString;
     private static int level = 1;
     private int numBullets;
     private static int controlNumBullets = 1;
@@ -177,7 +179,6 @@ public class gameView extends AppCompatActivity {
             //////////////////////////////////// end playerball's movement
 
             //////////////////////////////////////draw bullets
-            //canvas.drawLine(0,250,0,canvas.getWidth(),yellow);
             int a;
             a = controlNumBullets;
             for(int i = 0; i < a; i++) {
@@ -188,7 +189,7 @@ public class gameView extends AppCompatActivity {
                     bulletSpeedX[i] = -bulletSpeedX[i];
                 }
 
-                if(bulletsY[i] < 100 || bulletsY[i] > canvas.getHeight()-350){
+                if(bulletsY[i] < 150 || bulletsY[i] > canvas.getHeight()-350){
                     bulletSpeedY[i] = -bulletSpeedY[i];
                 }
 
@@ -203,25 +204,19 @@ public class gameView extends AppCompatActivity {
             targetRect = new RectF(targetX,targetY,targetX+100,targetY+100);
             canvas.drawRect(targetRect,paint2);
             //System.out.println(canvas.getHeight()); 2128
-/*
-
-
-            if(targetX < 30 || targetX > canvas.getWidth() -100){
-                targetXSpeed = -targetXSpeed;
-            }
-
-            if(targetY < 50 || targetY > canvas.getHeight()-250){
-                targetYSpeed = -targetYSpeed;
-            }
-
-            targetX += targetXSpeed;
-            targetY += targetYSpeed;*/
 
             /////////////////////////////  collision detection
 
             for(int i = 0; i< controlNumBullets; i++){
                 if(RectF.intersects(playerBallRect,bulletsRect[i])){
                     gameOver = true;
+                }
+
+                if (RectF.intersects(targetRect, bulletsRect[i])){
+                    //bulletSpeedX[i] = -bulletSpeedX[i];
+                    if(bulletSpeedY[i] < 0) {
+                        bulletSpeedY[i] = -bulletSpeedY[i];
+                    }
                 }
             }
 
@@ -240,16 +235,13 @@ public class gameView extends AppCompatActivity {
                 ySpeedControl = true;
             }
 
+
+
             //////////////////////////////////////// end collision detection
 
-            /*for(int i = 0; i< numBullets; i++) {
-                if (RectF.intersects(targetRect, bulletsRect[i])){
-
-                }
-            }*/
 
             if(gameOver == true){
-                //gameOver();
+                gameOver();
             }
 
             Paint dragHelperGreen = new Paint();
@@ -259,6 +251,7 @@ public class gameView extends AppCompatActivity {
 
             if(dragAreaHelper == false){
                 canvas.drawLine(0,1828,canvas.getWidth(),1828,dragHelperRed);
+                canvas.drawLine(0,150,canvas.getWidth(),150,dragHelperRed);
             }
             else if(dragAreaHelper == true){
                 canvas.drawLine(0,1828,canvas.getWidth(),1828,dragHelperGreen);
@@ -303,11 +296,11 @@ public class gameView extends AppCompatActivity {
                                 if (c > 0) {
                                     c = c / 30;
                                     Yposition = -c;
+                                    ySpeedControl = false;
                                     System.out.println(firstTouchY + ",  " + secondTouchY + ",  " + Yposition);
                                 }
                             }
                         }
-                        ySpeedControl = false;
                         firstTouchY = 0;
                         secondTouchY = 0;
                         break;
@@ -352,12 +345,17 @@ public class gameView extends AppCompatActivity {
         }
 
         public void gameOver(){
-            this.onStop();
+            //this.onPause();
+            //this.finish();
+            // intent2 = new Intent(getApplicationContext(),rank.class);
+            //intent2.putExtra("SCORE", score);
+            //startActivity(intent2);
+            SharedPreferences sp = getSharedPreferences("GAME_DATA",MODE_PRIVATE);
+            SharedPreferences.Editor editor = sp.edit();
+            editor.putInt("currentScore", score);
+            editor.commit();
             this.finish();
-            Intent intent2 = new Intent(getApplicationContext(),result.class);
-            intent2.putExtra("SCORE", score);
-            startActivity(intent2);
-            startActivity(new Intent(getApplicationContext(),result.class));
+            //startActivity(new Intent(getApplicationContext(),result.class));
         }
 
     @Override

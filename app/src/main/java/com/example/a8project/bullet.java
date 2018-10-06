@@ -32,8 +32,8 @@ public class bullet extends Ball {
         speedX = random.nextInt(randomSpeedX) + 1;
         speedY = random.nextInt(randomSpeedY) + 1;
         numBullets = 30;
-        x = random.nextInt(1035);
-        y = random.nextInt(1600) + 102;
+        x = random.nextInt(900) +151;
+        y = random.nextInt(1600) + 152;
     }
 
     public float getSpeedX(){

@@ -30,7 +30,7 @@ public class result extends AppCompatActivity {
 
             SharedPreferences.Editor editor = setting.edit();
             editor.putInt("HIGH_SCORE", score);
-            editor.commit();
+            editor.apply();
         }
         else{
             highScoreLabel.setText("High Score is :" + highScore);
