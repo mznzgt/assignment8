@@ -6,42 +6,48 @@
     android:layout_height="match_parent"
     tools:context=".result"
     android:orientation="vertical"
+    android:background="@drawable/steel"
     android:gravity="center">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:fontFamily="casual"
         android:text="GAME IS OVER..."
-        android:textSize="31sp" />
+        android:textColor="@android:color/background_light"
+        android:textSize="36sp"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/scoreLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="150"
-        android:textSize="40sp"
-        android:layout_marginTop="81dp" />
+        android:layout_marginTop="81dp"
+        android:fontFamily="casual"
+        android:textColor="@android:color/background_light"
+        android:textSize="30sp" />
 
     <TextView
         android:id="@+id/highScoreLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="High Score is : 320"
-        android:textSize="30sp"
-        android:layout_marginTop="70dp" />
+        android:layout_marginTop="70dp"
+        android:fontFamily="casual"
+        android:textColor="@android:color/background_light"
+        android:textSize="30sp" />
 
     <Button
+        android:id="@+id/play"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="45dp"
-        android:onClick="playAgain"
         android:text="Play Again" />
 
     <Button
+        android:id="@+id/menu"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="45dp"
-        android:onClick="returnToMain"
         android:text="Menu" />
 
 
