@@ -12,7 +12,7 @@ public class playerBall extends Ball {
     private Bitmap bitmap;
     private float length;
     private float height;
-
+    private float speedX,speedY;
     private float x;
 
     private float y;
@@ -53,6 +53,14 @@ public class playerBall extends Ball {
 
     public float getY(){
         return y;
+    }
+
+    public float getSpeedX(){
+        return speedX;
+    }
+
+    public float getSpeedY(){
+        return speedY;
     }
 
     public float getLength(){
