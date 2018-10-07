@@ -1,5 +1,6 @@
 package com.example.a8project;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -25,7 +26,11 @@ import android.view.ScaleGestureDetector;
 import android.view.SurfaceHolder;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 import java.util.Random;
 import java.util.RandomAccess;
@@ -71,6 +76,9 @@ public class gameView extends AppCompatActivity {
     ScaleGestureDetector scaleDetector;
     MyScaleListener scaleListener;
 
+    //Popup Window
+    Dialog popUpWindow;
+    result r =  new result();
 
     class AccelerometerListener implements SensorEventListener {
 
@@ -340,6 +348,9 @@ public class gameView extends AppCompatActivity {
         listener = new AccelerometerListener();
         sensorMgr.registerListener(listener, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
 
+        //Initialise the pop up window
+        popUpWindow = new Dialog(this);
+
         Log.d("COMPX202", "Finishing onCreate");
 
         }
@@ -354,8 +365,77 @@ public class gameView extends AppCompatActivity {
             SharedPreferences.Editor editor = sp.edit();
             editor.putInt("currentScore", score);
             editor.commit();
-            this.finish();
+            ShowPopup();
+            //this.finish();
             //startActivity(new Intent(getApplicationContext(),result.class));
+        }
+
+        public void RestartGame(View view){
+            Button playAgain = (Button)popUpWindow.findViewById((R.id.play));
+            popUpWindow.setContentView(R.layout.activity_result);
+            playAgain.setOnClickListener(new View.OnClickListener() {
+               @Override
+               public void onClick(View v) {
+                  popUpWindow.dismiss();
+                  onRestart();
+                  Log.d("A8Project","restart");
+                  //startActivity(new Intent(gameView.this,gameView.class));
+               }
+            });
+        }
+
+        public void returnToMenu(View view){
+            Button menu = (Button)popUpWindow.findViewById(R.id.menu);
+            menu.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Log.d("A8Project","restart");
+                    startActivity(new Intent(gameView.this,MainActivity.class));
+                }
+            });
+        }
+
+        public void ShowPopup(){
+             popUpWindow.setContentView(R.layout.activity_result);
+             /*Button playAgain = (Button)popUpWindow.findViewById(R.id.play);
+             playAgain.setOnClickListener(new View.OnClickListener() {
+                 @Override
+                 public void onClick(View v) {
+                     popUpWindow.dismiss();
+                     onRestart();
+                     Log.d("A8Project","restart");
+                     startActivity(new Intent(gameView.this,gameView.class));
+                 }
+             });
+*/
+            /* Button menu = (Button)popUpWindow.findViewById(R.id.menu);
+             menu.setOnClickListener(new View.OnClickListener() {
+                 @Override
+                 public void onClick(View v) {
+                     Log.d("A8Project","restart");
+                     startActivity(new Intent(gameView.this,MainActivity.class));
+                 }
+             });
+*/
+             TextView currScore = (TextView)popUpWindow.findViewById(R.id.scoreLabel);
+             SharedPreferences setting = getSharedPreferences("GAME_DATA", Context.MODE_PRIVATE);
+             int currentScore = setting.getInt("currentScore", 0);
+             currScore.setText("Current Score: " + currentScore);
+
+             TextView highest = (TextView)popUpWindow.findViewById(R.id.highScoreLabel);
+             int Highscore = getIntent().getIntExtra("HIGH_SCORE",0);
+
+             if(currentScore > Highscore){
+                highest.setText("Highest Score : " + currentScore);
+                SharedPreferences.Editor editor = setting.edit();
+                editor.putInt("HIGH_SCORE", currentScore);
+                editor.apply();
+            }
+            else{
+                highest.setText("Highest Score : " + Highscore);
+            }
+
+             popUpWindow.show();
         }
 
     @Override
@@ -372,6 +452,23 @@ public class gameView extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
     }
+
+    @Override
+    protected void onRestart() {super.onRestart();}
+
+    /*public void RestartGame(View view){
+        Button playAgain = (Button)popUpWindow.findViewById((R.id.play));
+        popUpWindow.setContentView(R.layout.activity_result);
+        playAgain.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popUpWindow.dismiss();
+                onRestart();
+                Log.d("A8Project","restart");
+                //startActivity(new Intent(gameView.this,gameView.class));
+            }
+        });
+    }*/
 
     class MyGestureListener implements GestureDetector.OnGestureListener {
         @Override
